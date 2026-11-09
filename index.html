@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vetrina – siti semplici per negozi di quartiere</title>
+<meta name="description" content="Un sito semplice per il tuo negozio: orari con aperto ora, dove sei, WhatsApp e contatti. Fatto per il telefono. La prima bozza è gratis.">
+<meta name="theme-color" content="#222222">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- I quattro font dei caratteri, solo per i nomi degli esempi (sottoinsieme di lettere) -->
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Gloock&family=Archivo+Narrow:wght@700&family=Bricolage+Grotesque:opsz,wght@12..96,800&display=swap&text=BottegaAtelierOfficinaEnergia" rel="stylesheet">
+<style>
+/* ============ TOKEN (design system Vetrina, stile scuro) ============ */
+:root {
+  color-scheme: dark;
+  --surface: #222222;
+  --surface-alt: #2c2c2c;
+  --ink: #ffffff;
+  --ink-muted: #b3b3b3;
+  --line: #737373;
+  --whatsapp: #0f7a3d;
+
+  --font-body: "Figtree", system-ui, sans-serif;
+  --font-title: "Figtree", system-ui, sans-serif;
+
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-10: 40px;
+  --space-16: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+
+  --border: 1.5px solid var(--line);
+  --maxw: 1080px;
+}
+/* Versione chiara: fondo bianco, testo #222222, selezionato nero pieno */
+html[data-tema="chiaro"] {
+  color-scheme: light;
+  --surface: #ffffff;
+  --surface-alt: #f2f2f2;
+  --ink: #222222;
+  --ink-muted: #5c5c5c;
+  --line: #8a8a8a;
+}
+
+/* ============ BASE ============ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--surface); scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px; line-height: 26px; font-weight: 400;
+  overflow-wrap: break-word;
+}
+h1, h2, h3, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+[hidden] { display: none !important; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--space-4); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: var(--space-4); top: -100px; z-index: 60; background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: var(--radius-pill); font-weight: 600; text-decoration: none; }
+.skip:focus { top: 12px; }
+
+.label { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.small { font-size: 14px; line-height: 20px; }
+.muted { color: var(--ink-muted); }
+.lead { font-size: 19px; line-height: 28px; }
+
+section[id] { scroll-margin-top: 72px; }
+.band { padding: var(--space-16) 0 0; }
+.band:last-of-type { padding-bottom: var(--space-16); }
+
+.kicker { color: var(--ink-muted); margin-bottom: var(--space-2); }
+.section-title {
+  font-family: var(--font-title); font-weight: 700;
+  font-size: 30px; line-height: 36px; letter-spacing: -0.01em;
+  margin-bottom: var(--space-6); max-width: 22em;
+}
+.section-intro { color: var(--ink-muted); max-width: 36em; margin: calc(-1 * var(--space-2)) 0 var(--space-6); }
+
+/* ============ SCHEDE: senza riempimento, bordo line, nessuna ombra ============ */
+.card {
+  background: transparent;
+  border: var(--border); border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+.card h3 { font-size: 18px; line-height: 26px; font-weight: 600; margin-bottom: 4px; }
+.card p { color: var(--ink-muted); }
+.grid { display: grid; gap: 12px; }
+
+/* ============ BOTTONI ============ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 48px; padding: 12px var(--space-6);
+  border-radius: var(--radius-pill); border: 1.5px solid transparent;
+  font: 600 16px/24px var(--font-body);
+  text-decoration: none; text-align: center; cursor: pointer;
+}
+.btn-main { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.btn-main:hover { background: transparent; color: var(--ink); text-decoration: none; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { background: var(--surface-alt); border-color: var(--ink); text-decoration: none; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* ============ TASTO TEMA (come nel demo) ============ */
+.tema {
+  position: fixed; z-index: 50;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  right: calc(env(safe-area-inset-right, 0px) + 12px);
+  display: inline-flex; gap: 2px; padding: 3px;
+  background: var(--surface); border: var(--border); border-radius: var(--radius-pill);
+}
+.tema button {
+  width: 40px; height: 40px; display: grid; place-items: center;
+  border: 0; border-radius: var(--radius-pill); padding: 0;
+  background: transparent; color: var(--ink); cursor: pointer;
+}
+.tema button:hover { background: var(--surface-alt); }
+.tema button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.tema button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ============ TESTATA ============ */
+.top { padding: 18px 0 0; }
+.top .wrap { display: flex; align-items: center; min-height: 52px; padding-right: 116px; }
+.brand { font-family: var(--font-title); font-weight: 700; font-size: 22px; line-height: 28px; text-decoration: none; letter-spacing: -0.01em; }
+.brand::after { content: ""; display: inline-block; width: 7px; height: 7px; margin-left: 3px; border-radius: var(--radius-pill); background: var(--ink); }
+
+/* ============ APERTURA ============ */
+.hero { padding: var(--space-10) 0 0; }
+.hero h1 {
+  font-family: var(--font-title); font-weight: 700;
+  font-size: 40px; line-height: 44px; letter-spacing: -0.02em;
+  margin: var(--space-4) 0; max-width: 13em;
+}
+.hero .lead { color: var(--ink-muted); max-width: 30em; margin-bottom: var(--space-6); }
+.hero .lead strong { color: var(--ink); font-weight: 600; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-actions .btn { flex: 1 1 200px; }
+.hero-note { margin-top: var(--space-4); color: var(--ink-muted); }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-top: var(--space-10); }
+.facts li { border: var(--border); border-radius: var(--radius-md); padding: 12px 14px; }
+.facts .label { display: block; color: var(--ink-muted); margin-bottom: 2px; }
+.facts strong { font-weight: 600; }
+
+/* ============ IL PROBLEMA ============ */
+.problem .card { padding: 20px var(--space-6); }
+.problem .card p { color: var(--ink); }
+.problem .card p + p { color: var(--ink-muted); margin-top: 4px; }
+
+/* ============ COSA C'È NEL SITO ============ */
+.feature { display: flex; flex-direction: column; gap: var(--space-4); }
+.sample {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);
+  padding-top: var(--space-4); border-top: 1.5px dashed var(--line);
+  margin-top: auto; font-size: 14px; line-height: 20px;
+}
+.sample .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--ink); color: var(--surface); }
+.sample .pill::before { content: ""; width: 7px; height: 7px; border-radius: var(--radius-pill); background: currentColor; }
+.sample .wa { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-pill); background: var(--whatsapp); color: #ffffff; font-weight: 600; }
+.sample .wa svg { width: 14px; height: 14px; }
+.sample .strong { color: var(--ink); font-weight: 600; }
+.sample .u { text-decoration: underline; text-underline-offset: 3px; color: var(--ink); }
+.sample .mini-tema { display: inline-flex; gap: 2px; padding: 2px; border: var(--border); border-radius: var(--radius-pill); }
+.sample .mini-tema span { width: 26px; height: 26px; display: grid; place-items: center; border-radius: var(--radius-pill); color: var(--ink); }
+.sample .mini-tema span:first-child { background: var(--ink); color: var(--surface); }
+.sample .mini-tema svg { width: 14px; height: 14px; }
+
+/* ============ ESEMPI ============ */
+.examples-grid { display: grid; gap: var(--space-6); }
+.ex-list { display: grid; gap: 12px; align-content: start; }
+.ex {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px var(--space-4);
+  padding: 18px 20px; min-height: 88px;
+  border: var(--border); border-radius: var(--radius-md);
+  text-decoration: none; color: var(--ink);
+}
+.ex:hover { background: var(--surface-alt); border-color: var(--ink); }
+.ex .ex-name { font-size: 28px; line-height: 34px; }
+.ex .ex-sub { grid-column: 1; color: var(--ink-muted); font-size: 15px; line-height: 22px; }
+.ex .ex-go { grid-column: 2; grid-row: 1 / span 2; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 15px; white-space: nowrap; }
+.ex .ex-go svg { width: 18px; height: 18px; }
+.ex:hover .ex-go span { text-decoration: underline; text-underline-offset: 3px; }
+.f-bottega { font-family: "Young Serif", Georgia, serif; font-weight: 400; }
+.f-atelier { font-family: "Gloock", Georgia, serif; font-weight: 400; }
+.f-officina { font-family: "Archivo Narrow", "Arial Narrow", sans-serif; font-weight: 700; }
+.f-energia { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 800; }
+.ex-note { margin-top: var(--space-2); }
+
+/* anteprima live (solo su schermi larghi, aggiunta dal JS) */
+.preview { display: none; }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border: var(--border); border-radius: var(--radius-pill); margin-bottom: 12px; }
+.seg button {
+  min-height: 36px; padding: 4px 12px; border: 0; border-radius: var(--radius-pill);
+  background: transparent; color: var(--ink); cursor: pointer; font-size: 16px;
+}
+.seg button:hover { background: var(--surface-alt); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.phone {
+  position: relative; width: 376px; height: 720px;
+  border: var(--border); border-radius: 22px; padding: 7px;
+  background: var(--surface-alt);
+}
+.phone-fallback {
+  position: absolute; inset: 7px; display: grid; place-items: center; text-align: center;
+  padding: var(--space-6); color: var(--ink-muted); font-size: 14px; line-height: 20px;
+}
+.phone iframe { position: relative; display: block; width: 100%; height: 100%; border: 0; border-radius: 16px; background: #222222; }
+.preview-link { margin-top: 12px; }
+
+/* ============ COME FUNZIONA ============ */
+.steps { display: grid; gap: 12px; counter-reset: passo; }
+.step { position: relative; padding-left: 72px; counter-increment: passo; }
+.step::before {
+  content: counter(passo);
+  position: absolute; left: var(--space-6); top: var(--space-6);
+  width: 34px; height: 34px; display: grid; place-items: center;
+  border-radius: var(--radius-pill); background: var(--ink); color: var(--surface);
+  font-weight: 700; font-size: 17px; line-height: 1;
+}
+.price-note { margin-top: var(--space-6); display: flex; gap: 12px; align-items: flex-start; }
+.price-note p { color: var(--ink); }
+.price-note .muted { display: block; color: var(--ink-muted); }
+
+/* ============ CHI SONO ============ */
+.about { max-width: 720px; }
+.about p { color: var(--ink); }
+.about p + p { margin-top: var(--space-4); }
+.about .sign { color: var(--ink-muted); }
+.promises { display: grid; gap: var(--space-2); margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1.5px dashed var(--line); }
+.promises li { display: flex; gap: 10px; align-items: flex-start; }
+.promises svg { flex: none; width: 18px; height: 18px; margin-top: 4px; }
+
+/* ============ DOMANDE ============ */
+.faq { display: grid; gap: 12px; max-width: 760px; }
+.faq details { border: var(--border); border-radius: var(--radius-md); }
+.faq details[open] { border-color: var(--ink); }
+.faq summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);
+  min-height: 56px; padding: 14px 20px; font-weight: 600; border-radius: var(--radius-md);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary:hover { background: var(--surface-alt); }
+.faq summary svg { flex: none; width: 20px; height: 20px; transition: transform .2s ease; }
+.faq details[open] summary svg { transform: rotate(45deg); }
+.faq details p { padding: 0 20px 18px; color: var(--ink-muted); max-width: 40em; }
+
+/* ============ SCRIVIMI ============ */
+.contact { max-width: 720px; }
+.contact .big { font-size: 22px; line-height: 30px; font-weight: 600; color: var(--ink); margin-bottom: var(--space-2); }
+.contact .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--space-6); }
+
+/* ============ PIÈ DI PAGINA ============ */
+footer { background: var(--surface-alt); border-top: var(--border); padding: var(--space-10) 0 calc(var(--space-10) + env(safe-area-inset-bottom, 0px)); }
+footer .wrap > * + * { margin-top: var(--space-2); }
+footer nav ul { display: flex; flex-wrap: wrap; gap: 4px var(--space-6); }
+footer nav a { display: inline-block; min-height: 24px; }
+
+/* ============ PC ============ */
+@media (min-width: 560px) {
+  .facts { grid-template-columns: repeat(4, 1fr); }
+  .grid.two { grid-template-columns: 1fr 1fr; }
+  .hero-actions .btn { flex: 0 0 auto; }
+}
+@media (min-width: 860px) {
+  .wrap { padding: 0 var(--space-6); }
+  .top .wrap { padding-right: 128px; }
+  .band { padding-top: 96px; }
+  .hero { padding-top: var(--space-16); }
+  .hero h1 { font-size: 68px; line-height: 72px; max-width: 12em; }
+  .hero .lead { font-size: 21px; line-height: 31px; }
+  .section-title { font-size: 40px; line-height: 46px; margin-bottom: var(--space-10); }
+  .section-intro { margin: calc(-1 * var(--space-6)) 0 var(--space-10); }
+  .grid { gap: var(--space-4); }
+  .grid.three { grid-template-columns: repeat(3, 1fr); }
+  .steps { grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+  .step { padding-left: var(--space-6); padding-top: 82px; }
+}
+@media (min-width: 960px) {
+  .has-preview .examples-grid { grid-template-columns: 1fr 376px; gap: var(--space-16); align-items: start; }
+  .has-preview .preview { display: block; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenuto">Vai al contenuto</a>
+
+<!-- Tasto versione scura / chiara: sempre visibile in alto a destra -->
+<div class="tema" role="group" aria-label="Versione della pagina">
+  <button type="button" data-tema="scuro" aria-pressed="true" aria-label="Versione scura" title="Versione scura">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="currentColor"/></svg>
+  </button>
+  <button type="button" data-tema="chiaro" aria-pressed="false" aria-label="Versione chiara" title="Versione chiara">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg>
+  </button>
+</div>
+
+<header class="top">
+  <div class="wrap"><a class="brand" href="#contenuto" aria-label="Vetrina, torna all'inizio">Vetrina</a></div>
+</header>
+
+<main id="contenuto" tabindex="-1">
+
+  <!-- 1. APERTURA -->
+  <section class="hero" aria-labelledby="t-hero">
+    <div class="wrap">
+      <p class="label muted">Siti per negozi di quartiere</p>
+      <h1 id="t-hero">Un sito semplice per il tuo negozio.</h1>
+      <p class="lead"><strong>Orari, dove sei, come contattarti.</strong> Tutto in una pagina, fatta per essere letta dal telefono.</p>
+      <div class="hero-actions">
+        <a class="btn btn-main" href="#esempi">Guarda gli esempi
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#come-funziona">Come funziona</a>
+      </div>
+      <p class="hero-note small">La prima bozza è gratis. Paghi solo se decidi di metterla online.</p>
+      <ul class="facts" aria-label="Cosa trova il cliente">
+        <li><span class="label">Quando</span><strong>Orari e aperto ora</strong></li>
+        <li><span class="label">Dove</span><strong>Indirizzo e mappa</strong></li>
+        <li><span class="label">Come</span><strong>WhatsApp e telefono</strong></li>
+        <li><span class="label">Cosa</span><strong>Prodotti e prezzi</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. IL PROBLEMA -->
+  <section class="band" id="problema" aria-labelledby="t-problema">
+    <div class="wrap">
+      <p class="label kicker">Il problema</p>
+      <h2 class="section-title" id="t-problema">I clienti ti cercano dal telefono. Spesso non trovano quello che serve.</h2>
+      <ul class="grid three problem">
+        <li class="card">
+          <p><strong>Vogliono sapere poche cose.</strong></p>
+          <p>Se sei aperto adesso, dove sei, come scriverti.</p>
+        </li>
+        <li class="card">
+          <p><strong>Su Facebook gli orari si perdono.</strong></p>
+          <p>Finiscono sotto i post, o non ci sono proprio.</p>
+        </li>
+        <li class="card">
+          <p><strong>La scheda Google è spesso a metà.</strong></p>
+          <p>Orari vecchi, niente foto, nessun modo veloce per scriverti.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. COSA C'È NEL SITO -->
+  <section class="band" id="cosa-ce" aria-labelledby="t-cosa">
+    <div class="wrap">
+      <p class="label kicker">Cosa c'è nel sito</p>
+      <h2 class="section-title" id="t-cosa">Le risposte che il cliente cerca, in alto e in chiaro.</h2>
+      <ul class="grid two three">
+        <li class="card feature">
+          <div><h3>Orari con "aperto ora"</h3>
+          <p>Il sito guarda l'ora e dice se sei aperto. Oggi è evidenziato, la pausa pranzo è scritta per esteso.</p></div>
+          <div class="sample" aria-hidden="true"><span class="pill label">Aperto ora</span><span class="strong">Chiude alle 19:30</span></div>
+        </li>
+        <li class="card feature">
+          <div><h3>Dove siamo</h3>
+          <p>Indirizzo completo, link a Google Maps e due righe su come arrivare o dove parcheggiare.</p></div>
+          <div class="sample" aria-hidden="true"><span class="strong">Via dei Tigli 14</span><span class="u">Apri in Google Maps</span></div>
+        </li>
+        <li class="card feature">
+          <div><h3>Contatti e WhatsApp</h3>
+          <p>Un bottone per scriverti su WhatsApp, uno per chiamarti. Il numero scritto per intero.</p></div>
+          <div class="sample" aria-hidden="true"><span class="wa"><svg viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Scrivici su WhatsApp</span></div>
+        </li>
+        <li class="card feature">
+          <div><h3>Prodotti o servizi</h3>
+          <p>Da tre a sei cose che fai o vendi, con le tue foto e il prezzo, se vuoi mostrarlo.</p></div>
+          <div class="sample" aria-hidden="true"><span class="strong">Cornetto alla crema</span><span>1,20 €</span></div>
+        </li>
+        <li class="card feature">
+          <div><h3>Versione scura e chiara</h3>
+          <p>Il cliente sceglie quella che legge meglio. Come questa pagina: prova il tasto in alto a destra.</p></div>
+          <div class="sample" aria-hidden="true"><span class="mini-tema"><span><svg viewBox="0 0 24 24" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="currentColor"/></svg></span><span><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></span></span><span>Scuro o chiaro</span></div>
+        </li>
+        <li class="card feature">
+          <div><h3>Fatto per il telefono</h3>
+          <p>Si apre in fretta, si legge con una mano. Va bene anche sul computer.</p></div>
+          <div class="sample" aria-hidden="true"><span class="strong">Una pagina sola</span><span>niente menu da cercare</span></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. ESEMPI -->
+  <section class="band" id="esempi" aria-labelledby="t-esempi">
+    <div class="wrap">
+      <p class="label kicker">Esempi</p>
+      <h2 class="section-title" id="t-esempi">Quattro stili, uno per ogni tipo di negozio.</h2>
+      <p class="section-intro">Stessa struttura, cambia il carattere. Scegli quello più vicino al tuo mestiere: lo adattiamo al tuo negozio.</p>
+      <div class="examples-grid">
+        <div>
+          <ul class="ex-list">
+            <li><a class="ex" href="https://antufano12-ctrl.github.io/vetrina-demo/#bottega">
+              <span class="ex-name f-bottega">Bottega</span>
+              <span class="ex-sub">Panifici, pasticcerie, bar</span>
+              <span class="ex-go"><span>Guarda</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a></li>
+            <li><a class="ex" href="https://antufano12-ctrl.github.io/vetrina-demo/#atelier">
+              <span class="ex-name f-atelier">Atelier</span>
+              <span class="ex-sub">Parrucchieri, estetiste, fioristi</span>
+              <span class="ex-go"><span>Guarda</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a></li>
+            <li><a class="ex" href="https://antufano12-ctrl.github.io/vetrina-demo/#officina">
+              <span class="ex-name f-officina">Officina</span>
+              <span class="ex-sub">Officine e artigiani</span>
+              <span class="ex-go"><span>Guarda</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a></li>
+            <li><a class="ex" href="https://antufano12-ctrl.github.io/vetrina-demo/#energia">
+              <span class="ex-name f-energia">Energia</span>
+              <span class="ex-sub">Palestre e locali</span>
+              <span class="ex-go"><span>Guarda</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a></li>
+          </ul>
+          <p class="ex-note small muted">Negli esempi i negozi sono inventati: nomi, indirizzi e numeri non sono reali.</p>
+        </div>
+
+        <!-- Anteprima live: mostrata solo su schermi larghi, l'iframe lo crea il JS -->
+        <div class="preview" id="preview" aria-labelledby="t-anteprima" role="region">
+          <p class="label kicker" id="t-anteprima">Anteprima sul telefono</p>
+          <div class="seg" role="group" aria-label="Stile da mostrare nell'anteprima">
+            <button type="button" class="f-bottega" data-k="bottega" aria-pressed="true">Bottega</button>
+            <button type="button" class="f-atelier" data-k="atelier" aria-pressed="false">Atelier</button>
+            <button type="button" class="f-officina" data-k="officina" aria-pressed="false">Officina</button>
+            <button type="button" class="f-energia" data-k="energia" aria-pressed="false">Energia</button>
+          </div>
+          <div class="phone" id="phone">
+            <p class="phone-fallback">Anteprima in caricamento. Se non compare, apri l'esempio con il link qui sotto.</p>
+          </div>
+          <p class="preview-link small"><a id="preview-link" href="https://antufano12-ctrl.github.io/vetrina-demo/#bottega">Apri questo esempio a schermo intero</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COME FUNZIONA -->
+  <section class="band" id="come-funziona" aria-labelledby="t-come">
+    <div class="wrap">
+      <p class="label kicker">Come funziona</p>
+      <h2 class="section-title" id="t-come">Prima vedi il sito, poi decidi.</h2>
+      <ol class="steps">
+        <li class="card step">
+          <h3>Ti preparo una bozza, gratis</h3>
+          <p>Uso i dati del tuo negozio: orari, indirizzo, contatti, cosa vendi.</p>
+        </li>
+        <li class="card step">
+          <h3>La guardi e mi dici cosa cambiare</h3>
+          <p>Testi, foto, colori, orari. Correggo finché non ti torna.</p>
+        </li>
+        <li class="card step">
+          <h3>Se ti piace, la mettiamo online</h3>
+          <p>Altrimenti non paghi niente e finisce lì.</p>
+        </li>
+      </ol>
+      <div class="card price-note">
+        <p><strong>Il prezzo lo concordiamo dopo la bozza.</strong>
+        <span class="muted">In modo chiaro e per iscritto, prima di mettere online il sito. Niente costi nascosti.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CHI SONO -->
+  <section class="band" id="chi-sono" aria-labelledby="t-chi">
+    <div class="wrap">
+      <p class="label kicker">Chi sono</p>
+      <h2 class="section-title" id="t-chi">Dietro Vetrina c'è una persona sola.</h2>
+      <div class="card about">
+        <p>Mi chiamo Antonio, sono un ragazzo che sta avviando questo progetto. Faccio siti semplici per i negozi di quartiere, quelli dove vado anche io.</p>
+        <p>Non sono un'agenzia. Seguo pochi negozi alla volta, così posso curare ogni sito con attenzione. Ti scrivo io e ti rispondo io.</p>
+        <p>Sono ancora minorenne: per questo i pagamenti passano da un mio genitore.</p>
+        <ul class="promises">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ti mostro il sito prima di chiederti qualcosa.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Uso solo le tue foto, con il tuo permesso.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Accordi chiari e per iscritto.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DOMANDE -->
+  <section class="band" id="domande" aria-labelledby="t-domande">
+    <div class="wrap">
+      <p class="label kicker">Domande</p>
+      <h2 class="section-title" id="t-domande">Domande frequenti</h2>
+      <div class="faq">
+        <details>
+          <summary>Ho già Facebook, mi serve?<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
+          <p>Facebook va bene per le novità. Il sito serve a chi cerca il tuo negozio su Google o riceve il link da un amico: trova subito orari, indirizzo e contatti, anche senza avere Facebook. Le due cose stanno bene insieme.</p>
+        </details>
+        <details>
+          <summary>Chi lo aggiorna se cambiano gli orari?<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
+          <p>Me lo scrivi e lo cambio io. Chiusure per ferie, nuovi orari, un prezzo diverso: basta un messaggio. Come funzionano gli aggiornamenti lo mettiamo per iscritto insieme al prezzo.</p>
+        </details>
+        <details>
+          <summary>Quanto costa?<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
+          <p>La bozza è gratis. Il prezzo lo decidiamo insieme dopo che l'hai vista, chiaro e per iscritto. Niente sorprese: se non ti convince, non paghi niente.</p>
+        </details>
+        <details>
+          <summary>Devo fare qualcosa io?<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
+          <p>Poco: confermare orari, indirizzo e contatti, e mandarmi qualche foto del negozio se le hai. Il resto lo preparo io.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. SCRIVIMI -->
+  <section class="band" id="scrivimi" aria-labelledby="t-scrivimi">
+    <div class="wrap">
+      <p class="label kicker">Scrivimi</p>
+      <h2 class="section-title" id="t-scrivimi">Vuoi una bozza per il tuo negozio?</h2>
+      <div class="card contact">
+        <p class="big">Rispondi al messaggio che ti ho mandato su Instagram o Facebook.</p>
+        <p class="muted">Bastano il nome del negozio e un "sì". Ti preparo la bozza e te la mando lì.</p>
+        <!-- CONTATTO: da completare (es. profilo Instagram del progetto) -->
+        <!-- Per attivarlo: togliere l'attributo hidden qui sotto e mettere il link vero in href. -->
+        <p class="actions" id="contatto-pubblico" hidden>
+          <a class="btn btn-main" href="https://www.instagram.com/NOME_PROFILO/" target="_blank" rel="noopener">Scrivimi su Instagram</a>
+        </p>
+        <p class="actions">
+          <a class="btn btn-ghost" href="#esempi">Rivedi gli esempi</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 9. PIÈ DI PAGINA -->
+<footer>
+  <div class="wrap small">
+    <p><strong>Vetrina</strong> · progetto di Antonio</p>
+    <nav aria-label="Piè di pagina">
+      <ul>
+        <li><a href="#esempi">Esempi</a></li>
+        <li><a href="https://antufano12-ctrl.github.io/vetrina-demo/">Sito di esempio completo</a></li>
+        <li><a href="#domande">Domande</a></li>
+      </ul>
+    </nav>
+    <p class="muted">Questa pagina non ha moduli e non usa cookie. Il browser ricorda solo se preferisci la versione scura o chiara.</p>
+  </div>
+</footer>
+
+<script>
+/* Versione scura / chiara: ricordata nel browser del visitatore (come nel demo) */
+function impostaTema(t) {
+  document.documentElement.setAttribute("data-tema", t);
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", t === "chiaro" ? "#ffffff" : "#222222");
+  document.querySelector('meta[name="color-scheme"]').setAttribute("content", t === "chiaro" ? "light" : "dark");
+  document.querySelectorAll(".tema button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tema === t)));
+  try { localStorage.setItem("vetrina-tema", t); } catch (err) {}
+}
+document.querySelector(".tema").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-tema]");
+  if (b) impostaTema(b.dataset.tema);
+});
+let temaSalvato = null;
+try { temaSalvato = localStorage.getItem("vetrina-tema"); } catch (err) {}
+impostaTema(temaSalvato === "chiaro" ? "chiaro" : "scuro");
+
+/* Anteprima live del demo: solo su schermi larghi, creata quando serve.
+   Se non carica, restano le schede con i link e il link sotto la cornice. */
+(function () {
+  const DEMO = "https://antufano12-ctrl.github.io/vetrina-demo/";
+  const NOMI = { bottega: "Bottega", atelier: "Atelier", officina: "Officina", energia: "Energia" };
+  const mq = matchMedia("(min-width: 960px)");
+  const phone = document.getElementById("phone");
+  const link = document.getElementById("preview-link");
+  let frame = null;
+  let scelta = "bottega";
+
+  function mostra(k) {
+    scelta = k;
+    document.querySelectorAll(".seg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.k === k)));
+    link.href = DEMO + "#" + k;
+    link.textContent = "Apri l'esempio " + NOMI[k] + " a schermo intero";
+    if (frame) {
+      frame.title = "Anteprima del sito di esempio " + NOMI[k];
+      frame.src = DEMO + "#" + k;
+    }
+  }
+  function attiva() {
+    if (!mq.matches || frame) return;
+    frame = document.createElement("iframe");
+    frame.loading = "lazy";
+    frame.referrerPolicy = "no-referrer";
+    frame.title = "Anteprima del sito di esempio " + NOMI[scelta];
+    frame.src = DEMO + "#" + scelta;
+    phone.appendChild(frame);
+    document.body.classList.add("has-preview");
+  }
+  document.querySelector(".seg").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-k]");
+    if (b) mostra(b.dataset.k);
+  });
+  if (mq.addEventListener) mq.addEventListener("change", attiva);
+  attiva();
+})();
+</script>
+</body>
+</html>
